@@ -23,6 +23,7 @@
 @end
 
 @implementation TSMessage
+
 static TSMessage *sharedMessage;
 static BOOL notificationActive;
 
@@ -121,7 +122,7 @@ __weak static UIViewController *_defaultViewController;
 
 + (void)showNotificationInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
-                                subtitle:(NSString *)subtitle
+                                subtitle:(NSAttributedString *)subtitle
                                    image:(UIImage *)image
                                     type:(TSMessageNotificationType)type
                                 duration:(NSTimeInterval)duration
@@ -154,7 +155,7 @@ __weak static UIViewController *_defaultViewController;
     
     for (TSMessageView *n in [TSMessage sharedMessage].messages)
     {
-        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subtitle isEqualToString:subtitle] || (!n.subtitle && !subtitle)))
+        if (([n.title isEqualToString:title] || (!n.title && !title)) && ([n.subtitle.string isEqualToString:subtitle] || (!n.subtitle && !subtitle)))
         {
             return; // avoid showing the same messages twice in a row
         }
