@@ -62,6 +62,16 @@ __weak static UIViewController *_defaultViewController;
                                       type:type];
 }
 
++ (void)showNotificationWithTitle:(NSString *)title
+                         attributedSubtitle:(NSAttributedString *)subtitle
+                             type:(TSMessageNotificationType)type
+{
+  [self showNotificationInViewController:[self defaultViewController]
+                                   title:title
+                                attributedSubtitle:subtitle
+                                    type:type];
+}
+
 + (void)showNotificationInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
                                 subtitle:(NSString *)subtitle
@@ -119,6 +129,24 @@ __weak static UIViewController *_defaultViewController;
                       canBeDismissedByUser:YES];
 }
 
++ (void)showNotificationInViewController:(UIViewController *)viewController
+                                   title:(NSString *)title
+                                attributedSubtitle:(NSAttributedString *)subtitle
+                                    type:(TSMessageNotificationType)type
+{
+  [self showNotificationInViewController:viewController
+                                   title:title
+                                attributedSubtitle:subtitle
+                                   image:nil
+                                    type:type
+                                duration:TSMessageNotificationDurationAutomatic
+                                callback:nil
+                             buttonTitle:nil
+                          buttonCallback:nil
+                              atPosition:TSMessageNotificationPositionTop
+                    canBeDismissedByUser:YES];
+}
+
 
 + (void)showNotificationInViewController:(UIViewController *)viewController
                                    title:(NSString *)title
@@ -145,6 +173,33 @@ __weak static UIViewController *_defaultViewController;
                                                  atPosition:messagePosition
                                        canBeDismissedByUser:dismissingEnabled];
     [self prepareNotificationToBeShown:v];
+}
+
++ (void)showNotificationInViewController:(UIViewController *)viewController
+                                   title:(NSString *)title
+                                attributedSubtitle:(NSAttributedString *)subtitle
+                                   image:(UIImage *)image
+                                    type:(TSMessageNotificationType)type
+                                duration:(NSTimeInterval)duration
+                                callback:(void (^)())callback
+                             buttonTitle:(NSString *)buttonTitle
+                          buttonCallback:(void (^)())buttonCallback
+                              atPosition:(TSMessageNotificationPosition)messagePosition
+                    canBeDismissedByUser:(BOOL)dismissingEnabled
+{
+  // Create the TSMessageView
+  TSMessageView *v = [[TSMessageView alloc] initWithTitle:title
+                                                 subtitle:subtitle
+                                                    image:image
+                                                     type:type
+                                                 duration:duration
+                                         inViewController:viewController
+                                                 callback:callback
+                                              buttonTitle:buttonTitle
+                                           buttonCallback:buttonCallback
+                                               atPosition:messagePosition
+                                     canBeDismissedByUser:dismissingEnabled];
+  [self prepareNotificationToBeShown:v];
 }
 
 
